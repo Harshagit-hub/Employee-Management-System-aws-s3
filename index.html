@@ -1,1 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f3f6fa;
+            color: #1f2937;
+        }
+
+        .header {
+            background: #1f2937;
+            color: white;
+            padding: 25px 50px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            font-size: 21px;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            padding: 11px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .add-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .update-btn {
+            background: #059669;
+            color: white;
+        }
+
+        .get-btn {
+            background: #4b5563;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .edit-btn {
+            background: #f59e0b;
+            color: white;
+            padding: 7px 12px;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+            color: white;
+            padding: 7px 12px;
+        }
+
+        #message {
+            display: none;
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 6px;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f8fafc;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 7px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        @media (max-width: 700px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .header {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Employee Management System</h1>
+        
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h2>Employee Information</h2>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label>Employee Name</label>
+                    <input type="text" id="employeeName"
+                           placeholder="Enter employee name">
+                </div>
+
+                <div class="form-group">
+                    <label>Employee ID</label>
+                    <input type="text" id="employeeId"
+                           placeholder="Enter employee ID">
+                </div>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label>Department</label>
+
+                    <select id="department">
+                        <option value="">Select department</option>
+                        <option>Cloud</option>
+                        <option>Development</option>
+                        <option>Testing</option>
+                        <option>HR</option>
+                        <option>Operations</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Designation</label>
+                    <input type="text" id="designation"
+                           placeholder="Enter designation">
+                </div>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email"
+                           placeholder="Enter email">
+                </div>
+
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="location"
+                           placeholder="Enter location">
+                </div>
+
+            </div>
+
+            <div class="buttons">
+
+                <button class="add-btn" onclick="addEmployee()">
+                    Add Employee
+                </button>
+
+                <button class="update-btn" onclick="updateEmployee()">
+                    Update Employee
+                </button>
+
+                <button class="get-btn" onclick="getEmployees()">
+                    Get Employees
+                </button>
+
+                <button class="clear-btn" onclick="clearForm()">
+                    Clear
+                </button>
+
+            </div>
+
+            <div id="message"></div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Employee List</h2>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Designation</th>
+                            <th>Email</th>
+                            <th>Location</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="employeeTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        const API_URL =
+            // "https://1lym2au37g.execute-api.ap-south-1.amazonaws.com/dev/employees";
+          "API URL"
+
+        let employees = [];
+
+        let editingEmployeeId = null;
+
+        let messageTimer;
+
+        function showMessage(message) {
+
+            const messageBox = document.getElementById("message");
+
+            clearTimeout(messageTimer);
+
+            messageBox.innerText = message;
+            messageBox.style.display = "block";
+
+            messageTimer = setTimeout(function () {
+                messageBox.style.display = "none";
+            }, 3000);
+        }
+
+
+        function getFormData() {
+
+            return {
+                employeeId: document.getElementById("employeeId").value,
+                employeeName: document.getElementById("employeeName").value,
+                department: document.getElementById("department").value,
+                designation: document.getElementById("designation").value,
+                email: document.getElementById("email").value,
+                location: document.getElementById("location").value
+            };
+        }
+
+
+        async function addEmployee() {
+
+            const employee = getFormData();
+
+            if (!employee.employeeId || !employee.employeeName) {
+                showMessage("Please enter Employee ID and Employee Name");
+                return;
+            }
+
+            try {
+
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(employee)
+                });
+
+                const data = await response.json();
+
+                employees.push(employee);
+
+                displayEmployees();
+
+                showMessage(data.message);
+
+                clearInputs();
+
+            } catch (error) {
+
+                console.error(error);
+
+                showMessage("Error adding employee");
+            }
+        }
+
+
+        async function updateEmployee() {
+
+            if (!editingEmployeeId) {
+                showMessage("Please select an employee to update");
+                return;
+            }
+
+            const employee = getFormData();
+
+            try {
+
+                const response = await fetch(API_URL, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(employee)
+                });
+
+                const data = await response.json();
+
+                const index = employees.findIndex(function (emp) {
+                    return emp.employeeId === editingEmployeeId;
+                });
+
+                if (index !== -1) {
+                    employees[index] = employee;
+                }
+
+                displayEmployees();
+
+                showMessage(data.message);
+
+                editingEmployeeId = null;
+
+                clearInputs();
+
+            } catch (error) {
+
+                console.error(error);
+
+                showMessage("Error updating employee");
+            }
+        }
+
+
+        async function getEmployees() {
+
+try {
+
+    const response = await fetch(API_URL, {
+        method: "GET"
+    });
+
+    const data = await response.json();
+
+    employees = data.employees || [];
+
+    displayEmployees();
+
+    showMessage(data.message);
+
+} catch (error) {
+
+    console.error(error);
+
+    showMessage("Error fetching employees");
+}
+}
+
+
+        function editEmployee(employeeId) {
+
+            const employee = employees.find(function (emp) {
+                return emp.employeeId === employeeId;
+            });
+
+            if (!employee) {
+                return;
+            }
+
+            document.getElementById("employeeId").value =
+                employee.employeeId;
+
+            document.getElementById("employeeName").value =
+                employee.employeeName;
+
+            document.getElementById("department").value =
+                employee.department;
+
+            document.getElementById("designation").value =
+                employee.designation;
+
+            document.getElementById("email").value =
+                employee.email;
+
+            document.getElementById("location").value =
+                employee.location;
+
+            editingEmployeeId = employeeId;
+
+            showMessage("Employee selected for editing");
+        }
+
+
+        async function deleteEmployee(employeeId) {
+
+            try {
+
+                const response = await fetch(API_URL, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        employeeId: employeeId
+                    })
+                });
+
+                const data = await response.json();
+
+                employees = employees.filter(function (employee) {
+                    return employee.employeeId !== employeeId;
+                });
+
+                displayEmployees();
+
+                showMessage(data.message);
+
+            } catch (error) {
+
+                console.error(error);
+
+                showMessage("Error deleting employee");
+            }
+        }
+
+
+        function displayEmployees() {
+
+            const table = document.getElementById("employeeTable");
+
+            table.innerHTML = "";
+
+            employees.forEach(function (employee) {
+
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${employee.employeeId}</td>
+                    <td>${employee.employeeName}</td>
+                    <td>${employee.department}</td>
+                    <td>${employee.designation}</td>
+                    <td>${employee.email}</td>
+                    <td>${employee.location}</td>
+
+                    <td>
+                        <div class="action-buttons">
+
+                            <button
+                                class="edit-btn"
+                                onclick="editEmployee('${employee.employeeId}')">
+                                Edit
+                            </button>
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteEmployee('${employee.employeeId}')">
+                                Delete
+                            </button>
+
+                        </div>
+                    </td>
+                `;
+
+                table.appendChild(row);
+            });
+        }
+
+
+        function clearInputs() {
+
+            document.getElementById("employeeName").value = "";
+            document.getElementById("employeeId").value = "";
+            document.getElementById("department").value = "";
+            document.getElementById("designation").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("location").value = "";
+
+        }
+
+
+        function clearForm() {
+
+            clearInputs();
+
+            editingEmployeeId = null;
+
+            showMessage("Form cleared successfully!");
+        }
+
+    </script>
+
+</body>
+</html>
